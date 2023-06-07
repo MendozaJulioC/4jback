@@ -2,7 +2,6 @@ const XLSX = require('xlsx');
 const { dblocal } = require('../config/dbConfig');
 
 
-
 const j4adminCtrl = {};
 
 j4adminCtrl.getPtoVotacion = async(req, res)=>{
@@ -115,7 +114,6 @@ j4adminCtrl.getTotalVotosFecha = async (req, res) => {
     console.error("Error getTotalVotosFecha", error);
   }
 };
-
 
 
 j4adminCtrl.getParticipacionElectoral = async (req, res)=>{
