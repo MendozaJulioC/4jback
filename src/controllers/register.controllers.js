@@ -47,7 +47,6 @@ authRegisterCtrl.authRegisterLider = async(req, res)=>{
             message: "Usuario registado exitosamente"
         })
 
-
     } catch (error) {
         console.error('error authRegisterLider:', error);
     }

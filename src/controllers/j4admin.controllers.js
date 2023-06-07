@@ -116,6 +116,8 @@ j4adminCtrl.getTotalVotosFecha = async (req, res) => {
   }
 };
 
+
+
 j4adminCtrl.getParticipacionElectoral = async (req, res)=>{
     try {
         const response = await dblocal.query(`select 

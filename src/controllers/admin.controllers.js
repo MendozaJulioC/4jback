@@ -21,7 +21,6 @@ adminCtrl.getPoblacionBarrioMed = async(req, res)=>{
         //          ${datos[i].TotalMujeres},
         //          ${datos[i].Total},
         //          ${datos[i].Vigencia}
-
                 
         //     );
         //   `)
