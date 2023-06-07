@@ -7,7 +7,7 @@ const dblocal = new Pool({
     password: process.env.PGPASSWORD,
     port: process.env.PGPORT
 })
-dblocal.connect().then(()=>console.log('Conexión Local DB'));
+dblocal.connect().then(()=>console.log('Conexión  DB'));
 
 
 module.exports = { dblocal };
