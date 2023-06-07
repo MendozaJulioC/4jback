@@ -221,5 +221,31 @@ j4adminCtrl.deleteLiderBarrio = async(req, res)=>{
     }
 }
 
+j4adminCtrl.getCedulaValidated = async(req, res)=>{
+    try {
+        const iduser = req.params.cedula;
+        const response = await dblocal.query(`
+        select
+        cedula, nom_lider 
+        from estado.auth_lider_territorio 
+        where cedula = $1`,[iduser]);
+        res.status(200).json({data: response.rows})
+        
+    } catch (error) {
+        console.error('Error getCedulaValidated', error);
+    }
+}
+
+
+j4adminCtrl.getCoberturaLiderBarrial = async (req, res)=>{
+    try {
+        const response = await dblocal.query(` 
+        select * from estado.porcentajecoberturaterritorial()
+        `)
+        res.status(200).json({data: response.rows})
+    } catch (error) {
+        console.error('Error getCoberturaLiderBarrial');
+    }
+}
 
 module.exports = j4adminCtrl;

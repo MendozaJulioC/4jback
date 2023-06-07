@@ -13,6 +13,10 @@ j4router.get('/admin/j4/puntovotacion', j4adminCtrl.getPtoVotacion)
         .get('/estado/resultados/elecciones/:vigecnia', j4adminCtrl.getResultadosFechas)
         .get('/estado/lideres/territoriales', j4adminCtrl.getLideresRegistrados)
         .get('/estado/lideres/barriales/:cedula', j4adminCtrl.getListadoBarrioLider)
+        .get ('/admin/j4/consulta/lider/:cedula',j4adminCtrl.getCedulaValidated)
+        .get('/estado/dondeestamos/barrios', j4adminCtrl.getCoberturaLiderBarrial)
+
+
         .delete('/estado/lideres/eliminar/:cedula', j4adminCtrl.deleteLiderBarrio )
 
 
