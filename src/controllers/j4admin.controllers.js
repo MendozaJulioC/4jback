@@ -68,6 +68,7 @@ j4adminCtrl.getHistoryVotacion = async (req, res)=>{
 
 j4adminCtrl.getLiderBarriosGIS = async(req, res)=>{
     try {
+
          const response = await dblocal.query(
          `  SELECT jsonb_build_object(
                 'type', 'FeatureCollection',
@@ -114,7 +115,6 @@ j4adminCtrl.getTotalVotosFecha = async (req, res) => {
     console.error("Error getTotalVotosFecha", error);
   }
 };
-
 
 j4adminCtrl.getParticipacionElectoral = async (req, res)=>{
     try {
@@ -203,7 +203,6 @@ j4adminCtrl.getListadoBarrioLider = async(req, res)=>{
     }
 }
 
-
 j4adminCtrl.deleteLiderBarrio = async(req, res)=>{
     try {
         const cedulalider = req.params.cedula;
@@ -236,15 +235,112 @@ j4adminCtrl.getCedulaValidated = async(req, res)=>{
     }
 }
 
-
 j4adminCtrl.getCoberturaLiderBarrial = async (req, res)=>{
     try {
         const response = await dblocal.query(` 
-        select * from estado.porcentajecoberturaterritorial()
+            select * from estado.porcentajecoberturaterritorial()
         `)
         res.status(200).json({data: response.rows})
     } catch (error) {
         console.error('Error getCoberturaLiderBarrial');
+    }
+}
+
+j4adminCtrl.getCuantosLideres = async(req, res)=>{
+    try {
+        const response = await dblocal.query('select count(cedula) from estado.auth_lider_territorio')
+        res.status(200).json({data: response.rows})
+
+    } catch (error) {
+        console.error('Error getCuantosLideres ', error);
+    }
+}
+
+
+j4adminCtrl.getCoberturaComunaLideresGIS = async (req, res)=>{
+    
+    try {
+        const response = await dblocal.query(
+            `SELECT jsonb_build_object(
+                'type', 'FeatureCollection',
+                'features', jsonb_agg(features.feature)
+                )
+                FROM(
+                select jsonb_build_object(
+                    'type',	'Feature',
+                    'id',	codcomuna,
+                    'geometry',	ST_AsGeoJSON(geom)::jsonb,
+                    'properties',	json_build_object(
+                        'CODCOMUNA', codcomuna,
+                        'NOMBRE', nombre,
+                        'LIDERES', lideres
+                      
+                    )
+                )AS feature FROM (	
+					select 
+						
+						territorio.tbl_comunas.codcomuna, 
+						territorio.tbl_comunas.nombre,
+						count(territorio.tbl_comunas.codcomuna) as lideres,
+					territorio.tbl_comunas.geom
+					from estado.tbl_lider_barrio
+					inner join territorio.tbl_barrios on territorio.tbl_barrios.codbarrio = estado.tbl_lider_barrio.cod_barrio
+					inner join territorio.tbl_comunas on territorio.tbl_comunas.codcomuna =territorio.tbl_barrios.codcomuna
+					group by 
+						territorio.tbl_comunas.codcomuna, 
+						territorio.tbl_comunas.nombre
+				)inputs) features;
+            `
+
+        )
+        res.status(200).json({data: response.rows})
+        
+    } catch (error) {
+        console.error('Error getCoberturaComunaLideresGIS ', error);
+    }
+
+}
+
+
+j4adminCtrl.getCoordinadorGIS = async(req, res)=>{
+    try {
+        const response = await dblocal.query(
+          `  
+                SELECT jsonb_build_object(
+                    'type', 'FeatureCollection',
+                    'features', jsonb_agg(features.feature)
+                )
+                FROM(
+                    select jsonb_build_object(
+                        'type',	'Feature',
+                        'id',	codcomuna,
+                        'geometry',	ST_AsGeoJSON(geom)::jsonb,
+                        'properties',	json_build_object(
+                        'CODCOMUNA', codcomuna,
+                        'NOMBRE', nombre,
+                        'NOMLIDER', nom_lider,
+                        'CELULAR', celular,
+                        'EMAIL', email
+                    )
+                )AS feature FROM (
+                    select 
+                        nom_lider,
+                        estado.auth_coordinador_territorio.cedula,
+                        email,
+                        celular,
+                        estado.tbl_coordinador_comuna.codcomuna,
+                        territorio.tbl_comunas.nombre,
+                        geom
+                    from estado.auth_coordinador_territorio
+                    join estado.tbl_coordinador_comuna on estado.tbl_coordinador_comuna.cedula = estado.auth_coordinador_territorio.cedula
+                    join territorio.tbl_comunas on territorio.tbl_comunas.codcomuna = estado.tbl_coordinador_comuna.codcomuna
+                )inputs) features;
+            `
+        );
+        res.status(200).json({data: response.rows})
+        
+    } catch (error) {
+        console.error('Error getCoordinadorGIS ', error);
     }
 }
 

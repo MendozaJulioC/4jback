@@ -52,4 +52,28 @@ authRegisterCtrl.authRegisterLider = async(req, res)=>{
     }
 }
 
+authRegisterCtrl.authRegisterCoordinador = async(req, res)=>{
+    try {
+         const { cedula, nombre, email, pass, celular,adress, rol,comuna}= req.body;
+    let registercomuna;
+    const resgistercoordinador = await dblocal.query(` 
+       INSERT INTO estado.auth_coordinador_territorio(
+            cedula, nom_lider, email, pass, celular, direccion, rol)
+        VALUES ($1, $2, $3, $4, $5, $6, $7);
+    `, [cedula,nombre,email,pass,celular,adress,rol]) 
+
+    comuna.map(async function(element){
+        registercomuna = await dblocal.query(`INSERT INTO estado.tbl_coordinador_comuna(cedula, codcomuna)VALUES ($1, $2);`,[cedula, element.value])
+    })
+    res.status(200).json({
+        Autor: "j4KratiaAnalitik",
+        data: resgistercoordinador.rows,
+        message: "Usuario registado exitosamente"
+    }) 
+    } catch (error) {
+        console.error('error authRegisterCoordinador:', error);
+    }
+  
+}
+
 module.exports = authRegisterCtrl 

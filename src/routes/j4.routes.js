@@ -15,7 +15,8 @@ j4router.get('/admin/j4/puntovotacion', j4adminCtrl.getPtoVotacion)
         .get('/estado/lideres/barriales/:cedula', j4adminCtrl.getListadoBarrioLider)
         .get ('/admin/j4/consulta/lider/:cedula',j4adminCtrl.getCedulaValidated)
         .get('/estado/dondeestamos/barrios', j4adminCtrl.getCoberturaLiderBarrial)
-
+        .get('/estado/dondeestamos/comunas', j4adminCtrl.getCoordinadorGIS)
+        .get('/estado/lideres/comunas',j4adminCtrl.getCoberturaComunaLideresGIS)
 
         .delete('/estado/lideres/eliminar/:cedula', j4adminCtrl.deleteLiderBarrio )
 
