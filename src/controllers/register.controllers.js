@@ -24,6 +24,27 @@ authRegisterCtrl.authRegister = async (req, res)=>{
     }
 }
 
+
+authRegisterCtrl.authRegisterCreo = async (req, res)=>{
+    try {
+        const {cedula, nom_user, email, password, celular, direccion, rol}= req.body;
+        let hashPass = await bcrypt.hash(password, 10)
+        const response = await dblocal.query(`
+        INSERT INTO auth.tbl_usuarios_creo(
+            cedula, nom_user, email, password, celular, direccion, rol)
+                VALUES ($1, $2,$3, $4,$5, $6,$7 );`,
+                [ cedula, nom_user, email,hashPass,celular,direccion, rol]);
+        res.status(200).json({
+            Autor: "j4data",
+            message: "Usuario registado exitosamente",
+            data: response.rows
+        })
+    } catch (error) {
+        console.error('Error authRegister: ', error);
+        res.status(403).json({message: "Usuario no registrado:  ", error})
+    }
+}
+
 authRegisterCtrl.authRegisterLider = async(req, res)=>{
     try {
         const {cedula, nombre, email, pass,celular, adress, rol, org,tiporg, barrio} = req.body;
@@ -54,7 +75,7 @@ authRegisterCtrl.authRegisterLider = async(req, res)=>{
 
 authRegisterCtrl.authRegisterCoordinador = async(req, res)=>{
     try {
-         const { cedula, nombre, email, pass, celular,adress, rol,comuna}= req.body;
+    const { cedula, nombre, email, pass, celular,adress, rol,comuna}= req.body;
     let registercomuna;
     const resgistercoordinador = await dblocal.query(` 
        INSERT INTO estado.auth_coordinador_territorio(

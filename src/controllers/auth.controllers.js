@@ -70,6 +70,18 @@ authCtrl.getEmail = async(req, res)=>{
   }
 }
 
+
+authCtrl.getEmailCreo = async(req, res)=>{
+  try {
+    const email = req.params.email;
+    const response = await dblocal.query(` select * from auth.tbl_usuarios_creo where email=$1`, [email]);
+    if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }
+  } catch (error) {
+    console.error('Error getEmail: ', error);
+    res.status(403).json({message: "Error consulta email ",error, success: false})
+  }
+}
+
 authCtrl.getIdCtrl = async(req, res)=>{
   try {
     const id_user = req.params.id_user;
