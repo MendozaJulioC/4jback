@@ -339,5 +339,38 @@ adminCtrl.getGiniComuna = async(req, res)=>{
         res.status(200).json({message: 'Ok'})
 }
 
+adminCtrl.getGeoDistribuida = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/GeoDistribuida.xlsx');
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
+         console.log(datos)
+        //    for (let x = 0; x < datos.length; x++) {
+        //      await dblocal.query(`
+        //         INSERT INTO dateo.tbl_spie_uspdm_inverpublica_geo(
+        //            cod_dep_georeporte, tipo_inversion_georeporte, codbpin_georeporte, codcomuna_georeporte, inversion_georeporte, territorio_cod_zona, territorio_cod_subzona, vigencia_georeporte, corte_georeporte, cod_sector, cod_comuna_gis)
+        //             VALUES (
+        //             '${datos[x].CodDependencia}',
+        //             '${datos[x].EsPP}',
+        //             '${datos[x].CodBPIN}',
+        //             ${datos[x].CodComuna},
+        //             ${datos[x].InvDistribuida},
+        //             '${datos[x].CodZona}',
+        //             '${datos[x].CodSubZona}',
+        //             '${datos[x].Vigencia}',
+        //             '${datos[x].Corte}',
+        //             ${datos[x].Cod_Sector},
+        //             '${datos[x].cod_comuna_gis}'
+        //         );
+                
+        //         `);
+        //      console.log(datos[x].CodDependencia, " - ", datos[x].Vigencia, " ok");
+        //    }
+            res.status(200).json({message: 'Ok'})
+        
+    } catch (error) {
+        console.error('Error getGeoDistribuida ', error);
+    }
+}
 
 module.exports = adminCtrl;

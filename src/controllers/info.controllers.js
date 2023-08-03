@@ -636,5 +636,74 @@ infoCtrl.getGISBarrioTotal = async(req, res)=>{
     }
 }
 
+infoCtrl.getExpansionComuna = async(req, res)=>{
+    try {
+        const Comuna =req.params.codcomuna;
+        const response = await dblocal.query(`
+        select nombre, subtipo,areaha,areakm2, aream2 from territorio.tbl_comunas where codcomuna=$1
+        `,[Comuna]);
+        res.status(200).json({
+            data: response.rows
+        })
+    } catch (error) {
+        console.error('getExpansionComuna: ',error);
+    }
+}
+// 
+
+infoCtrl.getPoblacionComuna= async(req, res)=>{
+    try {
+        const Comuna =req.params.codcomuna;
+        const response = await dblocal.query(`
+        select tothombres,totmujeres, total from dateo.tbl_poblacion_comuna where codcomuna=$1 and vigencia=2023
+        `,[Comuna]);
+        res.status(200).json({
+            data: response.rows
+        })
+    } catch (error) {
+        console.error('Error getPoblacionComuna:  ', error);
+    }
+}
+
+infoCtrl.getBarriosTable= async (req, res)=>{
+    try {
+        const Comuna =req.params.codcomuna;
+        const response = await dblocal.query(`
+        select 
+        dateo.tbl_poblacion_barrios.codcomuna,
+        dateo.tbl_poblacion_barrios.codbarrio,
+        territorio.tbl_barrios.nombre,
+        totalhombre,totalmujer,total,
+        aream2,areakm2,areaha
+        from dateo.tbl_poblacion_barrios 
+        left join territorio.tbl_barrios on  territorio.tbl_barrios.codbarrio = dateo.tbl_poblacion_barrios.codbarrio
+        where dateo.tbl_poblacion_barrios.codcomuna=$1 and vigencia=2023
+        `,[Comuna]);
+        res.status(200).json({
+            data: response.rows
+        })
+        
+    } catch (error) {
+        console.error('Error getBarriosTable');
+    }
+}
+
+infoCtrl.getVeredas= async(req, res)=>{
+    try {
+        const Comuna =req.params.codcomuna;
+        const response = await dblocal.query(`
+        select
+        codbarrio,nombre,aream2,areakm2,areaha
+        from territorio.tbl_barrios
+        where codcomuna=$1
+        `,[Comuna]);
+        res.status(200).json({
+            data: response.rows
+        })
+        
+    } catch (error) {
+        console.error('Error getVeredas', error);
+    }
+}
 
 module.exports = infoCtrl;

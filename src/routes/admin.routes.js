@@ -16,6 +16,7 @@ routerAdmin.get('/admin/generales/imcv/area', adminCtrl.getIMCVarea)
             .get('/admin/generales/ipex/comunas', adminCtrl.getIPEXcomunas)
             .get('/admin/generales/gini/area', adminCtrl.getGiniArea)
             .get('/admin/generales/gini/comunas', adminCtrl.getGiniComuna)
+            .get('/admin/generales/inversion/georreferenciada', adminCtrl.getGeoDistribuida)
 
             
 module.exports = routerAdmin;
