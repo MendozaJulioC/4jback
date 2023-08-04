@@ -705,5 +705,22 @@ infoCtrl.getVeredas= async(req, res)=>{
         console.error('Error getVeredas', error);
     }
 }
+ infoCtrl.getInversionComuna = async(req, res)=>{
+    try {
+        const Comuna =req.params.codcomuna;
+        const response = await dblocal.query(`
+        select codcomuna_georeporte, vigencia_georeporte, sum(inversion_georeporte) as inversion   from dateo.tbl_spie_uspdm_inverpublica_geo 
+        where codcomuna_georeporte=$1 and vigencia_georeporte >=2016
+        group by codcomuna_georeporte, vigencia_georeporte
+        order by vigencia_georeporte
+        `,[Comuna]);
+        res.status(200).json({
+            data: response.rows
+        })
+        
+    } catch (error) {
+        console.error('Error getInversionComuna: ',error );
+    }
+ }
 
 module.exports = infoCtrl;
