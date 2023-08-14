@@ -373,4 +373,91 @@ adminCtrl.getGeoDistribuida = async(req, res)=>{
     }
 }
 
+adminCtrl.getCuentasInversionPublica = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/DatosFinancieros3.xlsx');
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]])
+        console.log(datos)
+
+        for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+            INSERT INTO dateo.tbl_cuentas_inverpublica(
+                 codcuenta, cuenta)
+             VALUES (
+                 '${datos[x].cod_cuenta}',
+                 '${datos[x].cuenta}'
+             );
+            
+             `)
+            console.log(datos[x].cod_cuenta," - ",datos[x].cuenta  ," ok")   
+        }
+
+        res.status(200).json({message: 'Ok'})
+
+        
+    } catch (error) {
+        console.error('Error getCuentasInversionPublica: ',error );
+    }
+}
+
+adminCtrl.updateCuentasInversionPublica = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/DatosFinancieros3.xlsx');
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]])
+        console.log(datos)
+
+        //ojo hacer una consulta que permita saber si el codigo existe, si existe actualiza la linea, sino lo inserta
+
+        for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+            UPDATE dateo.tbl_cuentas_inverpublica
+            SET  cuenta=    '${datos[x].cuenta}', descripcion_cuenta= '${datos[x].descripcion_cuenta}'
+            WHERE codcuenta='${datos[x].cod_cuenta}';
+        `)
+
+            console.log(datos[x].cod_cuenta," - ",datos[x].cuenta  ," ok")   
+        }
+
+        res.status(200).json({message: 'Ok'})
+
+        
+    } catch (error) {
+        console.error('Error getCuentasInversionPublica: ',error );
+    }
+}
+
+
+adminCtrl.getSeguimientoCuentas = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/DatosFinancieros3.xlsx');
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[2]])
+        console.log(datos)
+
+        for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+            INSERT INTO dateo.tbl_cuentas_sgtoinversionpublica(
+               codcuenta, totales, vigencia)
+             VALUES (
+                 '${datos[x].cod_cuenta}',
+                 ${datos[x].totales},
+                 ${datos[x].vigencia}
+             );
+            
+             `)
+            console.log(datos[x].cod_cuenta," - ",datos[x].vigencia  ," ok")   
+        }
+
+        res.status(200).json({message: 'Ok'})
+
+        
+    } catch (error) {
+        console.error('Error getCuentasInversionPublica: ',error );
+    }
+}
+
+
+
 module.exports = adminCtrl;

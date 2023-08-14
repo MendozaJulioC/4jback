@@ -723,4 +723,33 @@ infoCtrl.getVeredas= async(req, res)=>{
     }
  }
 
+ infoCtrl.getCuentasInversion = async(req, res)=>{
+    try {
+        const response = await dblocal.query(`select * from dateo.tbl_cuentas_inverpublica`);
+        res.status(200).json({data: response.rows})
+    } catch (error) {
+        console.error('Error getCuentasInversion');
+    }
+ }
+
+infoCtrl.getTipoCuentaResultado = async(req, res)=>{
+    try {
+        const codigocuenta = req.params.codcuenta;
+        const response = await dblocal.query(`  
+        select 
+        dateo.tbl_cuentas_sgtoinversionpublica.codcuenta,
+        dateo.tbl_cuentas_inverpublica.cuenta,
+        totales,
+        vigencia
+        from dateo.tbl_cuentas_sgtoinversionpublica
+        inner join dateo.tbl_cuentas_inverpublica on dateo.tbl_cuentas_inverpublica.codcuenta = dateo.tbl_cuentas_sgtoinversionpublica.codcuenta
+        where dateo.tbl_cuentas_sgtoinversionpublica.codcuenta	= $1
+        `, [codigocuenta])
+        res.status(200).json({data: response.rows})
+    } catch (error) {
+        console.error('Error getTipoCuentaResultado');
+    }
+}
+
+
 module.exports = infoCtrl;

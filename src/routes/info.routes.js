@@ -35,7 +35,13 @@ inforouter.get('/api/datos/expansion/geo/comuna/:codcomuna', infoCtrl.getExpansi
         .get('/api/datos/poblacion/geo/comuna/:codcomuna', infoCtrl.getPoblacionComuna) 
         .get('/api/datos/barrios/geo/:codcomuna', infoCtrl.getBarriosTable) 
         .get('/api/datos/veredas/geo/:codcomuna', infoCtrl.getVeredas)
-        .get('/api/datos/inversion/geo/:codcomuna', infoCtrl.getInversionComuna) 
+
+inforouter.get('/api/datos/inversion/geo/:codcomuna', infoCtrl.getInversionComuna)
+        .get('/api/datos/inversion/cuentas', infoCtrl.getCuentasInversion)
+        .get('/api/datos/inversion/tipocuenta/:codcuenta', infoCtrl.getTipoCuentaResultado)
+
+
+
 
   
 module.exports = inforouter  

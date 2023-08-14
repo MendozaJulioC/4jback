@@ -16,7 +16,12 @@ routerAdmin.get('/admin/generales/imcv/area', adminCtrl.getIMCVarea)
             .get('/admin/generales/ipex/comunas', adminCtrl.getIPEXcomunas)
             .get('/admin/generales/gini/area', adminCtrl.getGiniArea)
             .get('/admin/generales/gini/comunas', adminCtrl.getGiniComuna)
-            .get('/admin/generales/inversion/georreferenciada', adminCtrl.getGeoDistribuida)
+           
+
+routerAdmin.get('/admin/generales/inversion/georreferenciada', adminCtrl.getGeoDistribuida)
+        .get('/admin/inverpublica/cuentas', adminCtrl.getCuentasInversionPublica)
+        .put('/admin/inverpublica/cuentas', adminCtrl.updateCuentasInversionPublica)
+        .get('/admin/inverpublica/seguimiento/cuentas', adminCtrl.getSeguimientoCuentas)
 
             
-module.exports = routerAdmin;
+module.exports = routerAdmin; 
