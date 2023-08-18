@@ -705,6 +705,7 @@ infoCtrl.getVeredas= async(req, res)=>{
         console.error('Error getVeredas', error);
     }
 }
+
  infoCtrl.getInversionComuna = async(req, res)=>{
     try {
         const Comuna =req.params.codcomuna;
@@ -750,6 +751,60 @@ infoCtrl.getTipoCuentaResultado = async(req, res)=>{
         console.error('Error getTipoCuentaResultado');
     }
 }
+
+
+infoCtrl.getSectorDNP = async(req, res)=>{
+try {
+    
+    const response = await dblocal.query(` 
+    select cod_sector ,
+        dateo.tbl_sector_dnp.nom_sector
+    from  dateo.tbl_spie_uspdm_inverpublica_geo inner join dateo.tbl_sector_dnp on dateo.tbl_sector_dnp.cod_sector_dnp= dateo.tbl_spie_uspdm_inverpublica_geo.cod_sector
+    where vigencia_georeporte >=2016 group by cod_sector, dateo.tbl_sector_dnp.nom_sector
+    order by  cod_sector, dateo.tbl_sector_dnp.nom_sector
+    `);
+    res.status(200).json({data: response.rows})
+
+
+} catch (error) {
+    console.error('error getSectorDNP ', error);
+}
+
+
+}
+
+
+
+
+
+
+infoCtrl.getInversionComunaSector = async(req, res)=>{
+    try {
+        const codsector = req.params.cod_sector;
+        const codcomuna = req.params.codcomuna;
+        const response = await dblocal.query(`
+        select 
+        vigencia_georeporte,
+        count(cod_sector),
+        dateo.tbl_sector_dnp.nom_sector,
+        sum(inversion_georeporte)as inversion
+        from dateo.tbl_spie_uspdm_inverpublica_geo
+        inner join dateo.tbl_sector_dnp on dateo.tbl_sector_dnp.cod_sector_dnp= dateo.tbl_spie_uspdm_inverpublica_geo.cod_sector
+        where vigencia_georeporte >=2016 and codcomuna_georeporte=$1 and cod_sector=$2 
+        group by vigencia_georeporte,cod_sector, dateo.tbl_sector_dnp.nom_sector, vigencia_georeporte
+        order by cod_sector, vigencia_georeporte
+        `, [codcomuna, codsector]);
+        res.status(200).json({data: response.rows})
+
+
+
+    } catch (error) {
+        console.error('Error  getInversionComunaSector', error);
+    }
+}
+
+
+
 
 
 module.exports = infoCtrl;

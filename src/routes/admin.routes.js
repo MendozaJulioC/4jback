@@ -22,6 +22,7 @@ routerAdmin.get('/admin/generales/inversion/georreferenciada', adminCtrl.getGeoD
         .get('/admin/inverpublica/cuentas', adminCtrl.getCuentasInversionPublica)
         .put('/admin/inverpublica/cuentas', adminCtrl.updateCuentasInversionPublica)
         .get('/admin/inverpublica/seguimiento/cuentas', adminCtrl.getSeguimientoCuentas)
+        
 
             
 module.exports = routerAdmin; 

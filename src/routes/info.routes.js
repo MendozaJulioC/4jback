@@ -39,6 +39,8 @@ inforouter.get('/api/datos/expansion/geo/comuna/:codcomuna', infoCtrl.getExpansi
 inforouter.get('/api/datos/inversion/geo/:codcomuna', infoCtrl.getInversionComuna)
         .get('/api/datos/inversion/cuentas', infoCtrl.getCuentasInversion)
         .get('/api/datos/inversion/tipocuenta/:codcuenta', infoCtrl.getTipoCuentaResultado)
+        .get('/api/datos/sectoresdnp/list', infoCtrl.getSectorDNP)
+        .get('/api/datos/inversion/geo/comuna/sector/:cod_sector/:codcomuna',infoCtrl.getInversionComunaSector )
 
 
 

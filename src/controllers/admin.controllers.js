@@ -343,7 +343,7 @@ adminCtrl.getGeoDistribuida = async(req, res)=>{
     try {
         const excel = XLSX.readFile('src/public/GeoDistribuida.xlsx');
         var nombreHoja = excel.SheetNames;
-        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[2]])
          console.log(datos)
         //    for (let x = 0; x < datos.length; x++) {
         //      await dblocal.query(`
@@ -351,20 +351,20 @@ adminCtrl.getGeoDistribuida = async(req, res)=>{
         //            cod_dep_georeporte, tipo_inversion_georeporte, codbpin_georeporte, codcomuna_georeporte, inversion_georeporte, territorio_cod_zona, territorio_cod_subzona, vigencia_georeporte, corte_georeporte, cod_sector, cod_comuna_gis)
         //             VALUES (
         //             '${datos[x].CodDependencia}',
-        //             '${datos[x].EsPP}',
+        //             ${datos[x].EsPP},
         //             '${datos[x].CodBPIN}',
         //             ${datos[x].CodComuna},
         //             ${datos[x].InvDistribuida},
         //             '${datos[x].CodZona}',
         //             '${datos[x].CodSubZona}',
-        //             '${datos[x].Vigencia}',
+        //             '${datos[x].vigencia}',
         //             '${datos[x].Corte}',
-        //             ${datos[x].Cod_Sector},
-        //             '${datos[x].cod_comuna_gis}'
+        //             '${datos[x].Cod_Sector}',
+        //             '${datos[x].cod_gis}'
         //         );
                 
         //         `);
-        //      console.log(datos[x].CodDependencia, " - ", datos[x].Vigencia, " ok");
+        //      console.log(datos[x].CodDependencia, " - ", datos[x].vigencia, " ok");
         //    }
             res.status(200).json({message: 'Ok'})
         
@@ -380,18 +380,18 @@ adminCtrl.getCuentasInversionPublica = async(req, res)=>{
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]])
         console.log(datos)
 
-        for (let x = 0; x < datos.length; x++) {
-            await dblocal.query(`
-            INSERT INTO dateo.tbl_cuentas_inverpublica(
-                 codcuenta, cuenta)
-             VALUES (
-                 '${datos[x].cod_cuenta}',
-                 '${datos[x].cuenta}'
-             );
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //     INSERT INTO dateo.tbl_cuentas_inverpublica(
+        //          codcuenta, cuenta)
+        //      VALUES (
+        //          '${datos[x].cod_cuenta}',
+        //          '${datos[x].cuenta}'
+        //      );
             
-             `)
-            console.log(datos[x].cod_cuenta," - ",datos[x].cuenta  ," ok")   
-        }
+        //      `)
+        //     console.log(datos[x].cod_cuenta," - ",datos[x].cuenta  ," ok")   
+        // }
 
         res.status(200).json({message: 'Ok'})
 
@@ -410,15 +410,15 @@ adminCtrl.updateCuentasInversionPublica = async(req, res)=>{
 
         //ojo hacer una consulta que permita saber si el codigo existe, si existe actualiza la linea, sino lo inserta
 
-        for (let x = 0; x < datos.length; x++) {
-            await dblocal.query(`
-            UPDATE dateo.tbl_cuentas_inverpublica
-            SET  cuenta=    '${datos[x].cuenta}', descripcion_cuenta= '${datos[x].descripcion_cuenta}'
-            WHERE codcuenta='${datos[x].cod_cuenta}';
-        `)
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //     UPDATE dateo.tbl_cuentas_inverpublica
+        //     SET  cuenta=    '${datos[x].cuenta}', descripcion_cuenta= '${datos[x].descripcion_cuenta}'
+        //     WHERE codcuenta='${datos[x].cod_cuenta}';
+        // `)
 
-            console.log(datos[x].cod_cuenta," - ",datos[x].cuenta  ," ok")   
-        }
+        //     console.log(datos[x].cod_cuenta," - ",datos[x].cuenta  ," ok")   
+        // }
 
         res.status(200).json({message: 'Ok'})
 
@@ -436,19 +436,19 @@ adminCtrl.getSeguimientoCuentas = async(req, res)=>{
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[2]])
         console.log(datos)
 
-        for (let x = 0; x < datos.length; x++) {
-            await dblocal.query(`
-            INSERT INTO dateo.tbl_cuentas_sgtoinversionpublica(
-               codcuenta, totales, vigencia)
-             VALUES (
-                 '${datos[x].cod_cuenta}',
-                 ${datos[x].totales},
-                 ${datos[x].vigencia}
-             );
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //     INSERT INTO dateo.tbl_cuentas_sgtoinversionpublica(
+        //        codcuenta, totales, vigencia)
+        //      VALUES (
+        //          '${datos[x].cod_cuenta}',
+        //          ${datos[x].totales},
+        //          ${datos[x].vigencia}
+        //      );
             
-             `)
-            console.log(datos[x].cod_cuenta," - ",datos[x].vigencia  ," ok")   
-        }
+        //      `)
+        //     console.log(datos[x].cod_cuenta," - ",datos[x].vigencia  ," ok")   
+        // }
 
         res.status(200).json({message: 'Ok'})
 
