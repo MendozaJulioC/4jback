@@ -778,6 +778,7 @@ try {
 
 
 
+
 infoCtrl.getInversionComunaSector = async(req, res)=>{
     try {
         const codsector = req.params.cod_sector;
@@ -803,6 +804,35 @@ infoCtrl.getInversionComunaSector = async(req, res)=>{
     }
 }
 
+
+infoCtrl.getInversionDepComuna = async(req, res)=>{
+    try {
+        const dependencia = req.params.cod_dependencia;
+        const codcomuna = req.params.codcomuna;
+        const response = await dblocal.query(
+        ` 
+            select
+                vigencia_georeporte,
+                cod_dep_georeporte,
+                nombre_dep,
+                sum (inversion_georeporte) as inversion
+            from dateo.tbl_spie_uspdm_inverpublica_geo
+            inner join dateo.tbl_dependencias on dateo.tbl_dependencias.cod_dep = cod_dep_georeporte
+            where vigencia_georeporte >=2016 and cod_dep_georeporte= $1 and codcomuna_georeporte= $2
+            group by vigencia_georeporte,
+                cod_dep_georeporte,
+                nombre_dep
+            order by vigencia_georeporte
+        `, [dependencia,codcomuna]
+        );    
+         res.status(200).json({data: response.rows})   
+
+
+
+    } catch (error) {
+        console.error('Error  getInversionDepComuna: ', error);
+    }
+}
 
 
 
