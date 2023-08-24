@@ -774,11 +774,6 @@ try {
 }
 
 
-
-
-
-
-
 infoCtrl.getInversionComunaSector = async(req, res)=>{
     try {
         const codsector = req.params.cod_sector;
@@ -834,6 +829,31 @@ infoCtrl.getInversionDepComuna = async(req, res)=>{
     }
 }
 
+infoCtrl.getAcumuladoInversionComuna = async (req, res)=> {
+    try {
+        const codcomuna = req.params.codcomuna;
+        const response = await dblocal.query(` 
+        select 
+        (select 
+             sum(inversion_georeporte)as inverfico 
+             from dateo.tbl_spie_uspdm_inverpublica_geo
+         where vigencia_georeporte >= 2016 and  vigencia_georeporte <= 2019 and codcomuna_georeporte= $1
+        ),
+        (select 
+             sum(inversion_georeporte)as inverdaniel 
+             from dateo.tbl_spie_uspdm_inverpublica_geo
+         where vigencia_georeporte>= 2020 and  vigencia_georeporte <= 2023 and codcomuna_georeporte= $1
+        )
+        from dateo.tbl_spie_uspdm_inverpublica_geo
+        group by inverfico, inverdaniel
+        `, [codcomuna]);
+        res.status(200).json({data: response.rows})   
+
+
+    } catch (error) {
+        console.error('Error getAcumuladoInversionComuna:', error);
+    }
+}
 
 
 
