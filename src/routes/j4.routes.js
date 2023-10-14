@@ -20,6 +20,10 @@ j4router.get('/admin/j4/puntovotacion', j4adminCtrl.getPtoVotacion)
 
         .delete('/estado/lideres/eliminar/:cedula', j4adminCtrl.deleteLiderBarrio )
 
+        .get('/estado/arboletes/listado', j4adminCtrl.getLideresArboletes)
+        .get('/estado/arboletes/consulta/:cedula', j4adminCtrl.getLConsultaLideresArboletes )
+     
+
 
 
 module.exports = j4router

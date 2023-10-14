@@ -344,4 +344,26 @@ j4adminCtrl.getCoordinadorGIS = async(req, res)=>{
     }
 }
 
+j4adminCtrl.getLideresArboletes = async(req, res)=>{
+    try {
+        const response = await dblocal.query('select * from estado.tbl_arboletes')
+        res.status(200).json({data: response.rows})
+
+    } catch (error) {
+        console.error('Error getLideresArboletes ', error);
+    }
+}
+
+
+
+j4adminCtrl.getLConsultaLideresArboletes = async(req, res)=>{
+    try {
+        const cedulalider = req.params.cedula
+        const response = await dblocal.query('select * from estado.tbl_arboletes where cedula= $1',[cedulalider])
+        res.status(200).json({data: response.rows})
+
+    } catch (error) {
+        console.error('Error getLideresArboletes ', error);
+    }
+}
 module.exports = j4adminCtrl;

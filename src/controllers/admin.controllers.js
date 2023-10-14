@@ -242,21 +242,21 @@ adminCtrl.getIPEXarea = async(req, res)=>{
         var nombreHoja = excel.SheetNames;
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[7]])
         console.log(datos)
-        //  for (let x = 0; x < datos.length; x++) {
-        //     await dblocal.query(`
-        //    INSERT INTO dateo.tbl_ipextreama_sector(
-	    //     codarea, area, results, vigencia)
-        //         VALUES (
-        //             '${datos[x].codarea}',
-        //             '${datos[x].area}',
-        //             ${datos[x].results},
-        //             ${datos[x].vigencia}
-        //        );
+         for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+           INSERT INTO dateo.tbl_ipextreama_sector(
+	        codarea, area, results, vigencia)
+                VALUES (
+                    '${datos[x].codarea}',
+                    '${datos[x].area}',
+                    ${datos[x].results},
+                    ${datos[x].vigencia}
+               );
             
-        //     `)
-        //     console.log(datos[x].codarea," - ",datos[x].vigencia  ," ok")   
+            `)
+            console.log(datos[x].codarea," - ",datos[x].vigencia  ," ok")   
            
-        // }
+        }
         res.status(200).json({message: 'Ok'})
 
 
@@ -458,6 +458,36 @@ adminCtrl.getSeguimientoCuentas = async(req, res)=>{
     }
 }
 
+adminCtrl.getLideresArboletes = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/ConsolidadoArboletes.xlsx');
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
+        console.log(datos)
 
+        for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+            INSERT INTO estado.tbl_arboletes(
+                cedula, nombre, puesto, mesa, celular)
+               
+             VALUES (
+                 ${datos[x].cedula},
+                 '${datos[x].Nombres}',
+                 '${datos[x].puesto}',
+                 ${datos[x].Mesa},
+                 '${datos[x].Celular}'
+             );
+            
+             `)
+            console.log(datos[x].cedula," - ",datos[x].vigencia  ," ok")   
+        }
+
+        res.status(200).json({message: 'Ok'})
+
+        
+    } catch (error) {
+        console.error('Error getLideresArboletes: ',error );
+    }
+}
 
 module.exports = adminCtrl;

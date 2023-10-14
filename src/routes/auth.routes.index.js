@@ -25,6 +25,8 @@ router.post('/api/auth/register/', authRegisterCtrl.authRegister)
 
 
 router.post('/api/auth/creo/register', authRegisterCtrl.authRegisterCreo)
-      .get('/api/auth/creo/validate/email/:email', authCtrl.getEmailCreo)      
+      .get('/api/auth/creo/validate/email/:email', authCtrl.getEmailCreo)  
+      
+      
 
 module.exports= router
