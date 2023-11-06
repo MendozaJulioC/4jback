@@ -25,6 +25,7 @@ j4router.get('/admin/j4/puntovotacion', j4adminCtrl.getPtoVotacion)
         .post('/estado/arboletes/registarnuevo', j4adminCtrl.RegisterArboletes)
 
         .get('/estado/alcaldeamigo/', j4adminCtrl.getGisAlcaldeAmigo)
+        .get('/estado/goberamigo/', j4adminCtrl.getGisGoberAmigo)
    
 
      

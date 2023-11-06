@@ -427,6 +427,41 @@ j4adminCtrl.getGisAlcaldeAmigo = async (req, res)=>{
     }
 }
 
+j4adminCtrl.getGisGoberAmigo = async (rq, res)=> {
+    try {
+        const response = await dblocal.query(`
+
+        SELECT jsonb_build_object(
+            'type', 'FeatureCollection',
+            'features', jsonb_agg(features.feature)
+            )
+            FROM(
+            select jsonb_build_object(
+                'type',	'Feature',
+                'id',	decodigo,
+                'geometry',	ST_AsGeoJSON(geom)::jsonb,
+                'properties',	json_build_object(
+                    'CODDEPARTAMENTO', decodigo,
+                    'NOMBRE', denombre,
+                    'NOMLIDER', gober
+                )
+            )AS feature FROM (	
+                select
+                    decodigo,
+                    denombre,
+                    gober,
+                    geom
+                from estado.tbl_gober_amigos
+                inner join territorio.tbl_departamentoscontinentales on territorio.tbl_departamentoscontinentales.decodigo = estado.tbl_gober_amigos.iddepartamento
+            )inputs) features;
+        `)
+        res.status(200).json({data: response.rows})
+
+    } catch (error) {
+        console.error('Error getGisGoberAmigo ', error);
+    }
+}
+
 
 
 
