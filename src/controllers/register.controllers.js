@@ -16,6 +16,7 @@ authRegisterCtrl.authRegister = async (req, res)=>{
         res.status(200).json({
             Autor: "j4data",
             message: "Usuario registado exitosamente",
+            estado : 1
             // data: response.rows
         })
     } catch (error) {
@@ -96,5 +97,8 @@ authRegisterCtrl.authRegisterCoordinador = async(req, res)=>{
     }
   
 }
+
+
+
 
 module.exports = authRegisterCtrl 

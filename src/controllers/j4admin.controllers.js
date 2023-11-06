@@ -366,4 +366,69 @@ j4adminCtrl.getLConsultaLideresArboletes = async(req, res)=>{
         console.error('Error getLideresArboletes ', error);
     }
 }
+
+
+
+j4adminCtrl.RegisterArboletes = async (req, res)=>{
+    try {
+
+        const {cedula, nombre, puesto, mesa, celular} = req.body;
+        const response = await dblocal.query(`
+        
+        INSERT INTO estado.tbl_arboletes(
+            cedula, nombre, puesto, mesa, celular)
+        VALUES($1, $2,$3,$4, $5);`, [cedula, nombre, puesto, mesa, celular])
+        res.status(200).json({
+            Autor: "j4data",
+            message: "Usuario registado exitosamente",
+            estado: 1, 
+            //  data: response.rows
+        })
+
+        
+    } catch (error) {
+        console.error('Error RegisterArboletes: ', error);
+    }
+}
+
+
+j4adminCtrl.getGisAlcaldeAmigo = async (req, res)=>{
+    try {
+        const response = await dblocal.query(` 
+        SELECT jsonb_build_object(
+            'type', 'FeatureCollection',
+            'features', jsonb_agg(features.feature)
+            )
+            FROM(
+            select jsonb_build_object(
+                'type',	'Feature',
+                'id',	iddane,
+                'geometry',	ST_AsGeoJSON(geom)::jsonb,
+                'properties',	json_build_object(
+                    'CODMUNICIPIO', iddane,
+                    'NOMBRE', municipio,
+                    'NOMLIDER', mpnombre
+                   
+                )
+            )AS feature FROM (	
+                select 
+                estado.tbl_alcalde_amigo.iddane,
+                    alcalde,
+                     mpnombre,
+                municipio,
+                    geom
+                from estado.tbl_alcalde_amigo
+                inner join territorio."tbl_municipiosColContinentales" on territorio."tbl_municipiosColContinentales".iddane = estado.tbl_alcalde_amigo.iddane )
+                inputs) features;
+                `)
+        res.status(200).json({data: response.rows})
+    } catch (error) {
+        console.error('Error getGisAlcaldeAmigo: ', error);
+    }
+}
+
+
+
+
+
 module.exports = j4adminCtrl;
