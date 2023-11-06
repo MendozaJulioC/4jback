@@ -407,7 +407,7 @@ j4adminCtrl.getGisAlcaldeAmigo = async (req, res)=>{
                 'properties',	json_build_object(
                     'CODMUNICIPIO', iddane,
                     'NOMBRE', municipio,
-                    'NOMLIDER', mpnombre
+                    'NOMLIDER', alcalde
                    
                 )
             )AS feature FROM (	
