@@ -26,6 +26,10 @@ j4router.get('/admin/j4/puntovotacion', j4adminCtrl.getPtoVotacion)
 
         .get('/estado/alcaldeamigo/', j4adminCtrl.getGisAlcaldeAmigo)
         .get('/estado/goberamigo/', j4adminCtrl.getGisGoberAmigo)
+
+
+        .get('/eafit/analitica/vista', j4adminCtrl.getTicketAnalitic)
+        .get('/eafit/analitica/dimension/tiempo', j4adminCtrl.getDimensionTiempoAnalitica)
    
 
      

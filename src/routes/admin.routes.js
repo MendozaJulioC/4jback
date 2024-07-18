@@ -24,7 +24,16 @@ routerAdmin.get('/admin/generales/inversion/georreferenciada', adminCtrl.getGeoD
         .get('/admin/inverpublica/seguimiento/cuentas', adminCtrl.getSeguimientoCuentas)
 
 
-routerAdmin.get('/admin/violeta/carga', adminCtrl.getLideresArboletes)
+
+
+routerAdmin.get('/admin/dap/hitos', adminCtrl.getHitos)
+.get('/admin/dap/hitos/geo',adminCtrl.getGeoHitos)
+
+
+
+
+
+
 
 
             

@@ -10,4 +10,6 @@ const dblocal = new Pool({
 dblocal.connect().then(()=>console.log('Conexión  DB'));
 
 
+
+
 module.exports = { dblocal };

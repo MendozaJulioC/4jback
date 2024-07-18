@@ -70,7 +70,6 @@ authCtrl.getEmail = async(req, res)=>{
   }
 }
 
-
 authCtrl.getEmailCreo = async(req, res)=>{
   try {
     const email = req.params.email;

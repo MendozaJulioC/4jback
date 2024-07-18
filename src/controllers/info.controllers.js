@@ -855,6 +855,138 @@ infoCtrl.getAcumuladoInversionComuna = async (req, res)=> {
     }
 }
 
+infoCtrl.getHitosMain = async(req, res)=>{
+    try {
+        const response = await dblocal.query(`
+            select 
+                id_hito,
+                hito,
+                desc_hito,
+                dependencias.tbl_dependencias.cod_dep,
+                nombre_dep,
+                cod_intervencion,
+                tipo_intervencion,
+                codproyecto,nomproyecto,
+                valorproyecto,
+                poblacion_objetivo,fecha_proyectada,obsrvaciones
+            from dap.tbl_hitos 
+            inner join dependencias.tbl_dependencias on dependencias.tbl_dependencias.cod_dep = dap.tbl_hitos.cod_dep
+            inner join dap.tbl_tipointervencion on dap.tbl_tipointervencion.codintervencion = dap.tbl_hitos.cod_intervencion
+        `)
+        if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
+    } catch (error) {
+        console.error('Error getHitos: ', error);
+        res.status(403).json({message: "Error consulta getHitos ",error, success: false})
+    }
+} 
+
+infoCtrl.getHitosMes = async(req, res)=>{
+    try {
+        const mes = req.params.mes
+        const response = await dblocal.query(`
+        SELECT 
+            id_hito,
+            hito,
+            desc_hito,
+            dependencias.tbl_dependencias.cod_dep,
+            nombre_dep,
+            cod_intervencion,
+            tipo_intervencion,
+            codproyecto,
+            nomproyecto,
+            valorproyecto,
+            poblacion_objetivo,
+            fecha_proyectada,
+            obsrvaciones,
+            EXTRACT(MONTH FROM fecha_proyectada) AS mes,
+            EXTRACT(YEAR FROM fecha_proyectada) AS anio
+        FROM 
+            dap.tbl_hitos 
+        INNER JOIN 
+            dependencias.tbl_dependencias 
+        ON dependencias.tbl_dependencias.cod_dep = dap.tbl_hitos.cod_dep
+        INNER JOIN 
+            dap.tbl_tipointervencion 
+        ON dap.tbl_tipointervencion.codintervencion = dap.tbl_hitos.cod_intervencion
+        WHERE 
+        EXTRACT(MONTH FROM fecha_proyectada) = $1;  
+        `,[mes])
+        if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
+
+    } catch (error) {
+        console.error('Error getHitosMes: ', error);
+        res.status(403).json({message: "Error consulta getHitosMes ",error, success: false})
+    }
+}
+
+
+infoCtrl.getHitoDep = async(req,res)=>{
+    try {
+        const coddependencia = req.params.cod_dep
+        const response = await dblocal.query(`
+        select 
+        id_hito,
+        hito,
+        desc_hito,
+        dependencias.tbl_dependencias.cod_dep,
+        nombre_dep,
+        cod_intervencion,
+        tipo_intervencion,
+        codproyecto,nomproyecto,
+        valorproyecto,
+        poblacion_objetivo,fecha_proyectada,obsrvaciones,
+        EXTRACT(MONTH FROM fecha_proyectada) AS mes ,
+        EXTRACT(YEAR FROM fecha_proyectada) AS anio 
+        from dap.tbl_hitos 
+        inner join dependencias.tbl_dependencias on dependencias.tbl_dependencias.cod_dep = dap.tbl_hitos.cod_dep
+        inner join dap.tbl_tipointervencion on dap.tbl_tipointervencion.codintervencion = dap.tbl_hitos.cod_intervencion
+        where dependencias.tbl_dependencias.cod_dep= $1
+        `,[coddependencia])
+        if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
+
+        
+    } catch (error) {
+        console.error('Error getHitosMes: ', error);
+        res.status(403).json({message: "Error consulta getHitosMes ",error, success: false})
+    }
+}
+infoCtrl.getHitoDepMes = async(req, res)=>{
+    try {
+        const dependencia = req.params.cod_dep
+        const mes = req.params.mes
+        const response = await dblocal.query(`
+        SELECT 
+            id_hito,
+            hito,
+            desc_hito,
+            dependencias.tbl_dependencias.cod_dep,
+            nombre_dep,
+            cod_intervencion,
+            tipo_intervencion,
+            codproyecto,
+            nomproyecto,
+            valorproyecto,
+            poblacion_objetivo,
+            fecha_proyectada,
+            obsrvaciones,
+            EXTRACT(MONTH FROM fecha_proyectada) AS mes,
+            EXTRACT(YEAR FROM fecha_proyectada) AS anio
+        FROM 
+            dap.tbl_hitos 
+        INNER JOIN 
+            dependencias.tbl_dependencias 
+            ON dependencias.tbl_dependencias.cod_dep = dap.tbl_hitos.cod_dep
+        INNER JOIN 
+            dap.tbl_tipointervencion 
+            ON dap.tbl_tipointervencion.codintervencion = dap.tbl_hitos.cod_intervencion
+        WHERE 
+        EXTRACT(MONTH FROM fecha_proyectada) = $1 and    dependencias.tbl_dependencias.cod_dep = $2 ;`, [mes, cod_dep])   
+        if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }      
+    } catch (error) {
+        console.error('Error getHitoDepMes: ', error);
+        res.status(403).json({message: "Error consulta getHitoDepMes ",error, success: false})
+    }
+}
 
 
 module.exports = infoCtrl;

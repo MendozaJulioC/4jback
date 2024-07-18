@@ -301,7 +301,6 @@ j4adminCtrl.getCoberturaComunaLideresGIS = async (req, res)=>{
 
 }
 
-
 j4adminCtrl.getCoordinadorGIS = async(req, res)=>{
     try {
         const response = await dblocal.query(
@@ -354,8 +353,6 @@ j4adminCtrl.getLideresArboletes = async(req, res)=>{
     }
 }
 
-
-
 j4adminCtrl.getLConsultaLideresArboletes = async(req, res)=>{
     try {
         const cedulalider = req.params.cedula
@@ -366,8 +363,6 @@ j4adminCtrl.getLConsultaLideresArboletes = async(req, res)=>{
         console.error('Error getLideresArboletes ', error);
     }
 }
-
-
 
 j4adminCtrl.RegisterArboletes = async (req, res)=>{
     try {
@@ -390,7 +385,6 @@ j4adminCtrl.RegisterArboletes = async (req, res)=>{
         console.error('Error RegisterArboletes: ', error);
     }
 }
-
 
 j4adminCtrl.getGisAlcaldeAmigo = async (req, res)=>{
     try {
@@ -427,7 +421,7 @@ j4adminCtrl.getGisAlcaldeAmigo = async (req, res)=>{
     }
 }
 
-j4adminCtrl.getGisGoberAmigo = async (rq, res)=> {
+j4adminCtrl.getGisGoberAmigo = async (req, res)=> {
     try {
         const response = await dblocal.query(`
 
@@ -459,6 +453,28 @@ j4adminCtrl.getGisGoberAmigo = async (rq, res)=> {
 
     } catch (error) {
         console.error('Error getGisGoberAmigo ', error);
+    }
+}
+
+j4adminCtrl.getTicketAnalitic = async(req, res)=>{
+    try {
+            const response = await dblocal.query( `select * from analitica.view_analitic`)
+            console.log(response);
+            res.status(200).json({data: response.rows})
+
+
+    } catch (error) {
+        console.error('Error getTicketAnalitic: ', error);
+    }
+}
+j4adminCtrl.getDimensionTiempoAnalitica = async(req, res)=>{
+    try {
+        const response = await dblocal.query( `select * from analitica.view_dimensiontiempo`)
+        console.log(response);
+        res.status(200).json({data: response.rows})
+
+    } catch (error) {
+        console.error('Error getDimensionTiempoAnalitica: ', error);
     }
 }
 

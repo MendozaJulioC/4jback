@@ -45,6 +45,11 @@ inforouter.get('/api/datos/inversion/geo/:codcomuna', infoCtrl.getInversionComun
         .get('/api/datos/inversion/acumulada/comunas/:codcomuna', infoCtrl.getAcumuladoInversionComuna)
 
 
+inforouter.get('/api/dap/hitos',infoCtrl.getHitosMain)
+.get('/api/dap/hitos/mes/:mes', infoCtrl.getHitosMes)
+.get('/api/dap/hitos/dependencias/:cod_dep', infoCtrl.getHitoDep)
+
+
 
 
   

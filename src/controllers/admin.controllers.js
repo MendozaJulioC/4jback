@@ -242,22 +242,22 @@ adminCtrl.getIPEXarea = async(req, res)=>{
         var nombreHoja = excel.SheetNames;
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[7]])
         console.log(datos)
-         for (let x = 0; x < datos.length; x++) {
-            await dblocal.query(`
-           INSERT INTO dateo.tbl_ipextreama_sector(
-	        codarea, area, results, vigencia)
-                VALUES (
-                    '${datos[x].codarea}',
-                    '${datos[x].area}',
-                    ${datos[x].results},
-                    ${datos[x].vigencia}
-               );
+        //  for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //    INSERT INTO dateo.tbl_ipextreama_sector(
+	    //     codarea, area, results, vigencia)
+        //         VALUES (
+        //             '${datos[x].codarea}',
+        //             '${datos[x].area}',
+        //             ${datos[x].results},
+        //             ${datos[x].vigencia}
+        //        );
             
-            `)
-            console.log(datos[x].codarea," - ",datos[x].vigencia  ," ok")   
+        //     `)
+        //     console.log(datos[x].codarea," - ",datos[x].vigencia  ," ok")   
            
-        }
-        res.status(200).json({message: 'Ok'})
+        // }
+        // res.status(200).json({message: 'Ok'})
 
 
     } catch (error) {
@@ -463,31 +463,165 @@ adminCtrl.getLideresArboletes = async(req, res)=>{
         const excel = XLSX.readFile('src/public/ConsolidadoArboletes.xlsx');
         var nombreHoja = excel.SheetNames;
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
-        console.log(datos)
+       // console.log(datos)
 
-        for (let x = 0; x < datos.length; x++) {
-            await dblocal.query(`
-            INSERT INTO estado.tbl_arboletes(
-                cedula, nombre, puesto, mesa, celular)
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //     INSERT INTO estado.tbl_arboletes(
+        //         cedula, nombre, puesto, mesa, celular)
                
-             VALUES (
-                 ${datos[x].cedula},
-                 '${datos[x].Nombres}',
-                 '${datos[x].puesto}',
-                 ${datos[x].Mesa},
-                 '${datos[x].Celular}'
-             );
+        //      VALUES (
+        //          ${datos[x].cedula},
+        //          '${datos[x].Nombres}',
+        //          '${datos[x].puesto}',
+        //          ${datos[x].Mesa},
+        //          '${datos[x].Celular}'
+        //      );
             
-             `)
-            console.log(datos[x].cedula," - ",datos[x].vigencia  ," ok")   
-        }
+        //      `)
+        //     console.log(datos[x].cedula," - ",datos[x].vigencia  ," ok")   
+        // }
 
-        res.status(200).json({message: 'Ok'})
+        // res.status(200).json({message: 'Ok'})
 
         
     } catch (error) {
         console.error('Error getLideresArboletes: ',error );
     }
 }
+
+adminCtrl.getEafitAnal = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/eafitanal.xlsx');
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
+        console.log(datos);
+    //    for (let x = 0; x < datos.length; x++) {
+    //     await dblocal.query(`
+    //     INSERT INTO analitica.tbl_fuente(
+    //         ticket, origen_tiquete, cod_tipofalla, tipo_falla, magnitud, cod_estado, estado, nombre, idservicio, servicio, cod_producto, producto, fecha_creado, falla_asignada_a, responsable, indisponibilidad, tiempo_solucion, cod_creador, creado_por, operador_servicio, fecha_solucion, mes_aplication_indisponibilidad, cod_ciudad, ciudad_falla, contacto, tiempo_monitoreo, tiempo_parada_reloj, lugar_falla, causa, accion, escalado_externo, razon_incumplimiento_ans, red_donde_se_realiza_el_evento, falla_solucionado_por, envia_informe, fecha_envio_informe, tiempo_envio_informe, grupo_apoyo, contratista_g_apoyo, tiquete_pe_asociado, disponibilidad_pactada, ciudad_origen_falla, ciudad_del_enlace, segmento_cliente, idserviciofin, noenlace)
+    //          VALUES (
+    //             ${datos[x].Tiquete},
+    //             '${datos[x].Origen_Tiquete}',
+    //             '${datos[x].Cod_Falla}', 
+    //             '${datos[x].Tipo_Falla}',
+    //             '${datos[x].Magnitud}', 
+    //             '${datos[x].Cod_Estado}',
+    //             '${datos[x].Estado}',
+    //             '${datos[x].Nombre}',
+    //             ${datos[x].IdServicio},
+    //             '${datos[x].Servicio}',
+    //             '${datos[x].Cod_Producto}',
+    //             '${datos[x].Producto}',
+    //             '${datos[x].FECHA_CREADO}',
+    //             '${datos[x].Falla_Asignada_A}',
+    //             '${datos[x].Responsable}',
+    //             ${datos[x].Indisponibilidad},
+    //             ${datos[x].Tiempo_De_Solucion},
+    //             '${datos[x].Cod_Creador}',
+    //             '${datos[x].Creada_Por}',
+    //             '${datos[x].Operador_Del_Servicio}',
+    //             '${datos[x].fecha_solucionado}',
+    //             ${datos[x].Mes_Aplicacion_Indisponibilidad},
+    //             '${datos[x].cod_ciudad}',
+    //             '${datos[x].Ciudad_De_La_Falla}',
+    //             '${datos[x].Contacto}',
+    //             ${datos[x].Tiempo_DE_Monitoreo},
+    //             ${datos[x].Tiempo_Parada_Reloj},
+    //             '${datos[x].Lugar_Del_Falla}',
+    //             '${datos[x].Causa}',
+    //             '${datos[x].Accion}',
+    //             '${datos[x].Escalado_externo}',
+    //             '${datos[x].Razon_incumplimineto_ANS}',
+    //             '${datos[x].Red_Donde_Se_Realiza_El_Evento}',
+    //             '${datos[x].Falla_Solucionada_Por}',
+    //             '${datos[x].Envio_Informe}',
+    //             '${datos[x].Fecha_Envio_Informe}',
+    //             '${datos[x].Tiempo_Envio_Informe}',
+    //             '${datos[x].Grupo_De_Apoyo}',
+    //             '${datos[x].Contratista_G_Apoyo}',
+    //             '${datos[x].Tiquete_PE_Asociado}',
+    //             '${datos[x].Disponibilidad_Pactada}',
+    //             '${datos[x].Ciudad_Donde_Fue_La_Falla}',
+    //             '${datos[x].ciudadenlace}',
+    //             '${datos[x].Segmento_Cliente}',
+    //             ${datos[x].IdServicio1},
+    //             ${datos[x].NoEnlace} );
+        
+    //      `)
+    //     console.log(datos[x].Tiquete," - ",datos[x].Origen_Tiquete  ," ok")   
+    // }
+
+    res.status(200).json({message: 'Ok'})
+
+        
+    } catch (error) {
+        console.error('Error getHitos: ', error);
+        res.status(403).json({message: "Error consulta getHitos ",error, success: false})
+
+    }  
+}
+
+adminCtrl.getHitos = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_VF.xlsx')
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[2]])
+        console.log(datos);
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //         INSERT INTO dap.tbl_hitos (hito, desc_hito, cod_dep, codproyecto, nomproyecto, valorproyecto, cod_intervencion, poblacion_objetivo, fecha_proyectada, obsrvaciones)
+        //         VALUES 
+        //           '${datos[x].Hito}', 
+        //           '${datos[x].desc_hito}',
+        //            ${datos[x].centrogestor},
+        //           '${datos[x].codproyecto}', 
+        //           '${datos[x].nomproyecto}', 
+        //            ${datos[x].valorproyecto},
+        //            ${datos[x].codintervencion},
+        //           '${datos[x].poblacion_objetivo}',
+        //           '${datos[x].fecha_proyectada}',
+        //           '${datos[x].Observaciones}' 
+        //     );`)
+        //     console.log(datos[x].cohito," - ",datos[x].codhito  ," ok")   
+        // }
+    res.status(200).json({success: true})
+    } catch (error) {
+        console.error('Error getHitos: ', error);
+        res.status(403).json({message: "Error consulta getHitos ",error, success: false})
+    }
+}
+adminCtrl.getGeoHitos = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_VF.xlsx')
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[3]])
+        // console.log(datos);
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //         INSERT INTO dap."tbl_geoHitos" (id_hito, cod_dep, cod_proyecto, vlr_proyecto, codcomuna, codintervencion, poblacion, fecha_proyectada, observaciones)
+        //         VALUES (
+        //           ${datos[x].id_hito}, 
+        //           ${datos[x].centro_gestor},
+        //           ${datos[x].codigo_proyecto},
+        //           ${datos[x].valor_proyecto}, 
+        //           '${datos[x].codcomuna}',
+        //           ${datos[x].codintervencion},
+        //           '${datos[x].poblacion_objetivo}',
+        //           '${datos[x].fecha}',
+        //           '${datos[x].Observaciones}' 
+        //     );`)
+        //     console.log(datos[x].centro_gestor," - ",datos[x].id_hito  ," ok")   
+        // }
+
+        // res.status(200).json({success: true})
+
+        
+    } catch (error) {
+        console.error('Error getGeoHitos: ', error);
+        res.status(403).json({message: "Error consulta getGeoHitos ",error, success: false})
+    }
+}
+
 
 module.exports = adminCtrl;
