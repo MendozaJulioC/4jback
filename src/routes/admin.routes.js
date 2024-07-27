@@ -28,6 +28,14 @@ routerAdmin.get('/admin/generales/inversion/georreferenciada', adminCtrl.getGeoD
 
 routerAdmin.get('/admin/dap/hitos', adminCtrl.getHitos)
 .get('/admin/dap/hitos/geo',adminCtrl.getGeoHitos)
+.get('/admin/dap/main/hitos', adminCtrl.getMainHitos)
+.get('/admin/dap/main/proyectos', adminCtrl.getMainHitosProyectos)
+.get('/admin/dap/main/comunas', adminCtrl.getHitosComunas)
+.get('/admin/dap/main/fechas', adminCtrl.getHitoFecha)
+.get('/admin/dap/main/relevantes', adminCtrl.getHitosPupis)
+// .get('/admin/url', adminCtrl.getImageHitos)
+
+
 
 
 

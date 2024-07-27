@@ -571,7 +571,7 @@ adminCtrl.getHitos = async(req, res)=>{
         // for (let x = 0; x < datos.length; x++) {
         //     await dblocal.query(`
         //         INSERT INTO dap.tbl_hitos (hito, desc_hito, cod_dep, codproyecto, nomproyecto, valorproyecto, cod_intervencion, poblacion_objetivo, fecha_proyectada, obsrvaciones)
-        //         VALUES 
+        //         VALUES (
         //           '${datos[x].Hito}', 
         //           '${datos[x].desc_hito}',
         //            ${datos[x].centrogestor},
@@ -583,7 +583,7 @@ adminCtrl.getHitos = async(req, res)=>{
         //           '${datos[x].fecha_proyectada}',
         //           '${datos[x].Observaciones}' 
         //     );`)
-        //     console.log(datos[x].cohito," - ",datos[x].codhito  ," ok")   
+      
         // }
     res.status(200).json({success: true})
     } catch (error) {
@@ -597,24 +597,24 @@ adminCtrl.getGeoHitos = async(req, res)=>{
         var nombreHoja = excel.SheetNames;
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[3]])
         // console.log(datos);
-        // for (let x = 0; x < datos.length; x++) {
-        //     await dblocal.query(`
-        //         INSERT INTO dap."tbl_geoHitos" (id_hito, cod_dep, cod_proyecto, vlr_proyecto, codcomuna, codintervencion, poblacion, fecha_proyectada, observaciones)
-        //         VALUES (
-        //           ${datos[x].id_hito}, 
-        //           ${datos[x].centro_gestor},
-        //           ${datos[x].codigo_proyecto},
-        //           ${datos[x].valor_proyecto}, 
-        //           '${datos[x].codcomuna}',
-        //           ${datos[x].codintervencion},
-        //           '${datos[x].poblacion_objetivo}',
-        //           '${datos[x].fecha}',
-        //           '${datos[x].Observaciones}' 
-        //     );`)
-        //     console.log(datos[x].centro_gestor," - ",datos[x].id_hito  ," ok")   
-        // }
+        for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+                INSERT INTO dap."tbl_geoHitos" (id_hito, cod_dep, cod_proyecto, vlr_proyecto, codcomuna, codintervencion, poblacion, fecha_proyectada, observaciones)
+                VALUES (
+                  ${datos[x].id_hito}, 
+                  ${datos[x].centro_gestor},
+                  ${datos[x].codigo_proyecto},
+                  ${datos[x].valor_proyecto}, 
+                  '${datos[x].codcomuna}',
+                  ${datos[x].codintervencion},
+                  '${datos[x].poblacion_objetivo}',
+                  '${datos[x].fecha}',
+                  '${datos[x].Observaciones}' 
+            );`)
+            console.log(datos[x].centro_gestor," - ",datos[x].id_hito  ," ok")   
+        }
 
-        // res.status(200).json({success: true})
+        res.status(200).json({success: true})
 
         
     } catch (error) {
@@ -623,5 +623,148 @@ adminCtrl.getGeoHitos = async(req, res)=>{
     }
 }
 
+adminCtrl.getMainHitos = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
+        console.log(datos);
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //  INSERT INTO dap.tbl_main_hitos(
+        //    id_hito, hito, desc_hito, codintervencion,centro_gestor, dependencia, dep_corto, poblacion, observaciones)
+        //         VALUES (
+        //           ${datos[x].Codhito}, 
+        //           '${datos[x].Hito}',
+        //            '${datos[x].desc_hito}',
+        //           ${datos[x].codintervencion}, 
+        //           ${datos[x].Centro_gestor},
+                
+        //           '${datos[x].Dependencia}',
+        //           '${datos[x].Dependencia_Corto}',
+        //           '${datos[x].poblacion}' ,
+        //     '${datos[x].observaciones}' 
+        //     );`)
+        //     console.log(datos[x].Codhito);
+        // }
+    } catch (error) {
+        console.error('Error getMainHitos: ', error);
+        res.status(403).json({message: "Error consulta getMainHitos ",error, success: false}) 
+    }
+}
+
+adminCtrl.getMainHitosProyectos = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]])
+        console.log(datos);
+        // for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //     INSERT INTO dap.tbl_hitos_proyecto(codhito, codproyecto, proyecto, valorproyecto)
+        //         VALUES (
+        //           ${datos[x].Codhito}, 
+        //           '${datos[x].Codproyecto}',
+        //           '${datos[x].Proyecto}',
+        //           ${datos[x].Valor_proyecto}
+        //     );`)
+        //     console.log(datos[x].Codhito);
+        // }
+
+    } catch (error) {
+        console.error('Error getMainHitos: ', error);
+        res.status(403).json({message: "Error consulta getMainHitos ",error, success: false}) 
+    }
+}
+adminCtrl.getHitosComunas = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[4]])
+        console.log(datos);
+        //    for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //   INSERT INTO dap.tbl_hitos_comunas(codhito, codcomuna)
+        //         VALUES (
+        //           ${datos[x].Codhito}, 
+        //           '${datos[x].Comuna}'
+        
+        //     );`)
+        //     console.log(datos[x].Codhito);
+        // }     
+        
+    } catch (error) {
+        console.error('Error getHitosComunas: ', error);
+        res.status(403).json({message: "Error consulta getHitosComunas ",error, success: false}) 
+    }
+}
+
+adminCtrl.getHitoFecha= async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[5]])
+        console.log(datos);
+           for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+         INSERT INTO dap.tbl_hitos_fechas(codhito, fecha_proyectada)
+                VALUES (
+                  ${datos[x].Codhito}, 
+                  '${datos[x].Fecha_mes}'
+        
+            );`)
+            console.log(datos[x].Codhito);
+        }     
+        
+    } catch (error) {
+        console.error('Error getHitosComunas: ', error);
+        res.status(403).json({message: "Error consulta getHitosComunas ",error, success: false}) 
+    }
+}
+
+
+adminCtrl.getHitosPupis = async(req, res)=>{
+    try {
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[6]])
+        console.log(datos);
+           for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+            INSERT INTO dap.tbl_hitos_relevantes(codhito)
+                VALUES (
+                  ${datos[x].RELVANTES}
+               
+        
+            );`)
+            console.log(datos[x].Codhito);
+        }     
+        
+    } catch (error) {
+        console.error('Error getHitosComunas: ', error);
+        res.status(403).json({message: "Error consulta getHitosComunas ",error, success: false}) 
+    }
+} 
+
+
+// adminCtrl.getImageHitos = async(req, res)=>{
+//     try {
+//         const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+//         var nombreHoja = excel.SheetNames;
+//         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
+//         console.log(datos);
+//            for (let x = 0; x < datos.length; x++) {
+//             await dblocal.query(`
+//         	UPDATE dap.tbl_main_hitos
+// 	        SET  urlimage='${datos[x].imageurl}'
+// 	        WHERE id_hito=  ${datos[x].Codhito};`)
+//             console.log(datos[x].Codhito);
+//         }     
+        
+//     } catch (error) {
+//         console.error('Error getHitosComunas: ', error);
+//         res.status(403).json({message: "Error consulta getHitosComunas ",error, success: false}) 
+//     }
+// }
 
 module.exports = adminCtrl;
