@@ -1177,6 +1177,22 @@ infoCtrl.getHitosDepTotal = async (req, res)=>{
 
 infoCtrl.getCountAnioMesDep = async (req, res)=>{
     try {
+        const anio = req.params.vigencia
+        const mes = req.params.mes
+        const response = await dblocal.query(` 
+            select 
+        	    dep_corto,
+	 	        COUNT(dep_corto)
+	        from dap.tbl_main_hitos
+            inner join dap.tbl_tipointervencion on tbl_tipointervencion.codintervencion = tbl_main_hitos.codintervencion
+            inner join dap.tbl_hitos_proyecto on dap.tbl_hitos_proyecto.codhito =dap.tbl_main_hitos.id_hito
+            inner join dap.tbl_hitos_fechas on dap.tbl_hitos_fechas.codhito = dap.tbl_main_hitos.id_hito
+            WHERE
+			    EXTRACT(YEAR FROM fecha_proyectada)   = $1 AND  
+			    EXTRACT(MONTH FROM fecha_proyectada)  = $2
+		    GROUP BY dep_corto
+            `, [anio, mes]
+        )
         if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
     } catch (error) {
         console.error('Error getHitoTipo: ', error);
