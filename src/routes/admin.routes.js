@@ -24,7 +24,7 @@ routerAdmin.get('/admin/generales/inversion/georreferenciada', adminCtrl.getGeoD
         .get('/admin/inverpublica/seguimiento/cuentas', adminCtrl.getSeguimientoCuentas)
 
 
-
+        postgresql://jmendoza:ZL7LNOgjqSdQpOgZYAulCaKUq8bXsbey@dpg-cqjtnnhu0jms73dno950-a.oregon-postgres.render.com/dapmdntq
 
 routerAdmin.get('/admin/dap/hitos', adminCtrl.getHitos)
 .get('/admin/dap/hitos/geo',adminCtrl.getGeoHitos)
