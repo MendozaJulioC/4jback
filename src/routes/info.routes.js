@@ -57,6 +57,8 @@ inforouter.get('/api/dap/hitos',infoCtrl.getHitosMain)
         .get('/api/dap/hitos/totaldep', infoCtrl.getHitosDepTotal)
         .get('/api/dap/hitos/vigencia/:vigencia/mes/:mes', infoCtrl.getHitoVigMes)
         .get('/api/dap/cuentahitos/vigencia/:vigencia/mes/:mes', infoCtrl.getCountAnioMesDep)
+        .get('/api/dap/dependencias', infoCtrl.getDependenciasNew )
+        .get('/api/dap/dependencia/count/:cod_dep', infoCtrl.getCountHitosDepVigMes)
 
 
 

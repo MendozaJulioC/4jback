@@ -855,27 +855,26 @@ infoCtrl.getAcumuladoInversionComuna = async (req, res)=> {
 infoCtrl.getHitosMain = async(req, res)=>{
     try {
         const response = await dblocal.query(`
-        select 
-        id_hito,
-        hito,desc_hito,
-        tbl_main_hitos.codintervencion,
-        tipo_intervencion,
-        dap.tbl_hitos_proyecto.codproyecto,
-        dap.tbl_hitos_proyecto.proyecto,
-        valorproyecto,
-        centro_gestor,
-        dep_corto,
-        poblacion,
-        dap.tbl_hitos_fechas.fecha_proyectada,
-         EXTRACT(MONTH FROM fecha_proyectada) AS mes,
-        observaciones,
-        urlimage
-        from dap.tbl_main_hitos
-        inner join dap.tbl_tipointervencion on tbl_tipointervencion.codintervencion = tbl_main_hitos.codintervencion
-        inner join dap.tbl_hitos_proyecto on dap.tbl_hitos_proyecto.codhito =dap.tbl_main_hitos.id_hito
-        inner join dap.tbl_hitos_fechas on dap.tbl_hitos_fechas.codhito = dap.tbl_main_hitos.id_hito
-		order by fecha_proyectada
-		
+            select 
+                id_hito,
+                hito,desc_hito,
+                tbl_main_hitos.codintervencion,
+                tipo_intervencion,
+                dap.tbl_hitos_proyecto.codproyecto,
+                dap.tbl_hitos_proyecto.proyecto,
+                valorproyecto,
+                centro_gestor,
+                dep_corto,
+                poblacion,
+                dap.tbl_hitos_fechas.fecha_proyectada,
+                EXTRACT(MONTH FROM fecha_proyectada) AS mes,
+                observaciones,
+                urlimage
+            from dap.tbl_main_hitos
+            inner join dap.tbl_tipointervencion on tbl_tipointervencion.codintervencion = tbl_main_hitos.codintervencion
+            inner join dap.tbl_hitos_proyecto on dap.tbl_hitos_proyecto.codhito =dap.tbl_main_hitos.id_hito
+            inner join dap.tbl_hitos_fechas on dap.tbl_hitos_fechas.codhito = dap.tbl_main_hitos.id_hito
+            order by fecha_proyectada
         `)
         if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
     } catch (error) {
@@ -924,23 +923,30 @@ infoCtrl.getHitoDep = async(req,res)=>{
     try {
         const coddependencia = req.params.cod_dep
         const response = await dblocal.query(`
-        select 
-        id_hito,
-        hito,
-        desc_hito,
-        dependencias.tbl_dependencias.cod_dep,
-        nombre_dep,
-        cod_intervencion,
-        tipo_intervencion,
-        codproyecto,nomproyecto,
-        valorproyecto,
-        poblacion_objetivo,fecha_proyectada,obsrvaciones,
-        EXTRACT(MONTH FROM fecha_proyectada) AS mes ,
-        EXTRACT(YEAR FROM fecha_proyectada) AS anio 
-        from dap.tbl_hitos 
-        inner join dependencias.tbl_dependencias on dependencias.tbl_dependencias.cod_dep = dap.tbl_hitos.cod_dep
-        inner join dap.tbl_tipointervencion on dap.tbl_tipointervencion.codintervencion = dap.tbl_hitos.cod_intervencion
-        where dependencias.tbl_dependencias.cod_dep= $1
+      	
+		  select 
+          id_hito,
+          hito,desc_hito,
+          tbl_main_hitos.codintervencion,
+          tipo_intervencion,
+          dap.tbl_hitos_proyecto.codproyecto,
+          dap.tbl_hitos_proyecto.proyecto,
+          valorproyecto,
+          centro_gestor,
+          dep_corto,
+          poblacion,
+          dap.tbl_hitos_fechas.fecha_proyectada,
+           EXTRACT(MONTH FROM fecha_proyectada) AS mes,
+           EXTRACT(YEAR FROM fecha_proyectada) AS anio,
+          observaciones,
+          urlimage
+          from dap.tbl_main_hitos
+          inner join dap.tbl_tipointervencion on tbl_tipointervencion.codintervencion = tbl_main_hitos.codintervencion
+          inner join dap.tbl_hitos_proyecto on dap.tbl_hitos_proyecto.codhito =dap.tbl_main_hitos.id_hito
+          inner join dap.tbl_hitos_fechas on dap.tbl_hitos_fechas.codhito = dap.tbl_main_hitos.id_hito
+              
+               where centro_gestor= $1
+                  order by fecha_proyectada;  
         `,[coddependencia])
         if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
 
@@ -1202,10 +1208,48 @@ infoCtrl.getCountAnioMesDep = async (req, res)=>{
 
 infoCtrl.getDependenciasNew = async(req, res)=>{
     try {
-        
+        const response = await dblocal.query(`select * from dependencias.tbl_newdependencias`)
+        if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
+
     } catch (error) {
-        
+        console.error('Error getDependenciasNew: ', error);
+        res.status(403).json({message: "Error consulta getDependenciasNew ",error, success: false}) 
     }
+}
+
+infoCtrl.getCountHitosDepVigMes = async(req, res)=>{
+try {
+    const dependencia = req.params.cod_dep
+    const response = await dblocal.query(`
+    		
+		 select 
+         centro_gestor,
+        count(centro_gestor),
+       EXTRACT(YEAR FROM fecha_proyectada) AS year,
+        EXTRACT(MONTH FROM fecha_proyectada) AS month
+    
+   from dap.tbl_main_hitos
+   inner join dap.tbl_tipointervencion on tbl_tipointervencion.codintervencion = tbl_main_hitos.codintervencion
+   inner join dap.tbl_hitos_proyecto on dap.tbl_hitos_proyecto.codhito =dap.tbl_main_hitos.id_hito
+   inner join dap.tbl_hitos_fechas on dap.tbl_hitos_fechas.codhito = dap.tbl_main_hitos.id_hito 
+   where centro_gestor= $1
+   group by  
+       centro_gestor,  
+       EXTRACT(YEAR FROM fecha_proyectada) ,
+       EXTRACT(MONTH FROM fecha_proyectada) 
+   order by 
+   centro_gestor,  
+       EXTRACT(YEAR FROM fecha_proyectada) ,
+       EXTRACT(MONTH FROM fecha_proyectada) 
+    
+    
+    `,[dependencia])
+    if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
+} catch (error) {
+    console.error('Error getDependenciasNew: ', error);
+    res.status(403).json({message: "Error consulta getDependenciasNew ",error, success: false}) 
+}
+
 }
 
 module.exports = infoCtrl;
