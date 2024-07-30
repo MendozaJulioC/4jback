@@ -1200,4 +1200,12 @@ infoCtrl.getCountAnioMesDep = async (req, res)=>{
     }
 }
 
+infoCtrl.getDependenciasNew = async(req, res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
 module.exports = infoCtrl;

@@ -33,6 +33,7 @@ routerAdmin.get('/admin/dap/hitos', adminCtrl.getHitos)
 .get('/admin/dap/main/comunas', adminCtrl.getHitosComunas)
 .get('/admin/dap/main/fechas', adminCtrl.getHitoFecha)
 .get('/admin/dap/main/relevantes', adminCtrl.getHitosPupis)
+
 // .get('/admin/url', adminCtrl.getImageHitos)
 
 
