@@ -1208,7 +1208,7 @@ infoCtrl.getCountAnioMesDep = async (req, res)=>{
 
 infoCtrl.getDependenciasNew = async(req, res)=>{
     try {
-        const response = await dblocal.query(`select * from dependencias.tbl_newdependencias`)
+        const response = await dblocal.query(`select * from dependencias.tbl_newdependencias order by nombre_dep`)
         if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
 
     } catch (error) {
@@ -1250,6 +1250,42 @@ try {
     res.status(403).json({message: "Error consulta getDependenciasNew ",error, success: false}) 
 }
 
+}
+
+infoCtrl.getHitosrelevantes = async(req, res)=>{
+    try {
+        const response = await dblocal.query(`
+        select 
+        id_hito,
+		idhito,
+        hito,
+		desc_hito,
+        tbl_main_hitos.codintervencion,
+        dap.tbl_tipointervencion.tipo_intervencion,
+        dap.tbl_hitos_proyecto.codproyecto,
+        dap.tbl_hitos_proyecto.proyecto,
+        valorproyecto,
+        centro_gestor,
+        dep_corto,
+        poblacion,
+        dap.tbl_hitos_fechas.fecha_proyectada,
+        EXTRACT(MONTH FROM fecha_proyectada) AS mes,
+        EXTRACT(YEAR FROM fecha_proyectada) AS anio,
+        observaciones,
+        urlimage
+        from dap.tbl_main_hitos
+       	inner join dap.tbl_tipointervencion on tbl_tipointervencion.codintervencion = dap.tbl_main_hitos.codintervencion
+        inner join dap.tbl_hitos_proyecto on dap.tbl_hitos_proyecto.codhito =dap.tbl_main_hitos.id_hito
+       	inner join dap.tbl_hitos_fechas on dap.tbl_hitos_fechas.codhito = dap.tbl_main_hitos.id_hito
+		inner join dap.tbl_relevantes on dap.tbl_relevantes.idhito =dap.tbl_main_hitos.id_hito
+        
+        `)
+        if(response.rows.length>0){res.status(200).json({data: response.rows, success: true}) }else{res.status(401).json({success: false})  }  
+        
+    } catch (error) {
+        console.error('Error getHitosrelevantes: ', error);
+        res.status(403).json({message: "Error consulta getHitosrelevantes ",error, success: false}) 
+    }
 }
 
 module.exports = infoCtrl;

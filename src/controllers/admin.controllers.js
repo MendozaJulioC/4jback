@@ -564,7 +564,7 @@ adminCtrl.getEafitAnal = async(req, res)=>{
 
 adminCtrl.getHitos = async(req, res)=>{
     try {
-        const excel = XLSX.readFile('src/public/Mtz_Hitos_VF.xlsx')
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_ConsolidadoP.xlsx')
         var nombreHoja = excel.SheetNames;
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[2]])
         console.log(datos);
@@ -625,14 +625,14 @@ adminCtrl.getGeoHitos = async(req, res)=>{
 
 adminCtrl.getMainHitos = async(req, res)=>{
     try {
-        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_ConsolidadoP.xlsx')
         var nombreHoja = excel.SheetNames;
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[0]])
-        console.log(datos);
+         console.log(datos);
         // for (let x = 0; x < datos.length; x++) {
         //     await dblocal.query(`
         //  INSERT INTO dap.tbl_main_hitos(
-        //    id_hito, hito, desc_hito, codintervencion,centro_gestor, dependencia, dep_corto, poblacion, observaciones)
+        //    id_hito, hito, desc_hito, codintervencion,centro_gestor, dependencia, dep_corto, poblacion, observaciones, urlimage)
         //         VALUES (
         //           ${datos[x].Codhito}, 
         //           '${datos[x].Hito}',
@@ -643,7 +643,8 @@ adminCtrl.getMainHitos = async(req, res)=>{
         //           '${datos[x].Dependencia}',
         //           '${datos[x].Dependencia_Corto}',
         //           '${datos[x].poblacion}' ,
-        //     '${datos[x].observaciones}' 
+        //          '${datos[x].observaciones}' ,
+        //         '${datos[x].imageurl}' 
         //     );`)
         //     console.log(datos[x].Codhito);
         // }
@@ -701,16 +702,16 @@ adminCtrl.getHitosComunas = async(req, res)=>{
 
 adminCtrl.getHitoFecha= async(req, res)=>{
     try {
-        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_ConsolidadoP.xlsx')
         var nombreHoja = excel.SheetNames;
-        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[5]])
-        console.log(datos);
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]])
+       // console.log(datos);
            for (let x = 0; x < datos.length; x++) {
             await dblocal.query(`
-         INSERT INTO dap.tbl_hitos_fechas(codhito, fecha_proyectada)
+                INSERT INTO dap.tbl_hitos_fechas(codhito, fecha_proyectada)
                 VALUES (
                   ${datos[x].Codhito}, 
-                  '${datos[x].Fecha_mes}'
+                  '${datos[x].Fecha_diames}'
         
             );`)
             console.log(datos[x].Codhito);
