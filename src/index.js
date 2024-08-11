@@ -10,9 +10,8 @@ app.use(require('./routes/j4.routes'))
 
 
 async function main(){
-  
-
-app.listen(process.env.AWS_PORT,()=>{ console.log(`Servidor activo ${process.env.AWS_PORT} `);})
+app.listen(process.env.AWS_PORT,()=>{ 
+        console.log(`Servidor activo ${process.env.AWS_PORT} `);
+    })
 }
-
 main();

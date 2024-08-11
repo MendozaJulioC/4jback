@@ -851,7 +851,7 @@ infoCtrl.getAcumuladoInversionComuna = async (req, res)=> {
         console.error('Error getAcumuladoInversionComuna:', error);
     }
 }
-
+//
 infoCtrl.getHitosMain = async(req, res)=>{
     try {
         const response = await dblocal.query(`

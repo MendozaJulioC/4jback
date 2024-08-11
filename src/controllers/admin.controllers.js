@@ -655,11 +655,11 @@ adminCtrl.getMainHitos = async(req, res)=>{
 }
 
 adminCtrl.getMainHitosProyectos = async(req, res)=>{
-    try {
-        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+    try { 
+         const excel = XLSX.readFile('src/public/Mtz_Hitos_ConsolidadoP.xlsx')
         var nombreHoja = excel.SheetNames;
-        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]])
-        console.log(datos);
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[3]])
+         console.log(datos);
         // for (let x = 0; x < datos.length; x++) {
         //     await dblocal.query(`
         //     INSERT INTO dap.tbl_hitos_proyecto(codhito, codproyecto, proyecto, valorproyecto)
@@ -679,9 +679,9 @@ adminCtrl.getMainHitosProyectos = async(req, res)=>{
 }
 adminCtrl.getHitosComunas = async(req, res)=>{
     try {
-        const excel = XLSX.readFile('src/public/Mtz_Hitos_PlataformaVF.xlsx')
+        const excel = XLSX.readFile('src/public/Mtz_Hitos_ConsolidadoP.xlsx')
         var nombreHoja = excel.SheetNames;
-        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[4]])
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[2]])
         console.log(datos);
         //    for (let x = 0; x < datos.length; x++) {
         //     await dblocal.query(`
@@ -705,17 +705,17 @@ adminCtrl.getHitoFecha= async(req, res)=>{
         const excel = XLSX.readFile('src/public/Mtz_Hitos_ConsolidadoP.xlsx')
         var nombreHoja = excel.SheetNames;
         var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]])
-       // console.log(datos);
-           for (let x = 0; x < datos.length; x++) {
-            await dblocal.query(`
-                INSERT INTO dap.tbl_hitos_fechas(codhito, fecha_proyectada)
-                VALUES (
-                  ${datos[x].Codhito}, 
-                  '${datos[x].Fecha_diames}'
+        console.log(datos);
+        //    for (let x = 0; x < datos.length; x++) {
+        //     await dblocal.query(`
+        //         INSERT INTO dap.tbl_hitos_fechas(codhito, fecha_proyectada)
+        //         VALUES (
+        //           ${datos[x].Codhito}, 
+        //           '${datos[x].Fecha_diames}'
         
-            );`)
-            console.log(datos[x].Codhito);
-        }     
+        //     );`)
+        //     console.log(datos[x].Codhito);
+        // }     
         
     } catch (error) {
         console.error('Error getHitosComunas: ', error);
@@ -768,4 +768,55 @@ adminCtrl.getHitosPupis = async(req, res)=>{
 //     }
 // }
 
+
+
+
+
+adminCtrl.getEjecucionMensual = async (req, res) => {
+    try {
+        const excel = XLSX.readFile('src/public/EJECUCION_PRESUPUESTAL.xlsx');
+        var nombreHoja = excel.SheetNames;
+        var datos = XLSX.utils.sheet_to_json(excel.Sheets[nombreHoja[1]]);
+        console.log(datos);
+        for (let x = 0; x < datos.length; x++) {
+            await dblocal.query(`
+                CALL inversion.insertar_si_no_existe(
+                    '${datos[x].Fondo}'::varchar,
+                    '${datos[x].CentroGestor}'::varchar,
+                    '${datos[x].PosicionPresupuestaria}'::varchar,
+                    '${datos[x].AreaFuncional}'::varchar,
+                    '${(datos[x].Proyecto).trim()}'::varchar,
+                    '${datos[x].Nombre}'::varchar,
+                    ${datos[x].Ppto_Inicial}::numeric,
+                    ${datos[x].Reducciones}::numeric,
+                    ${datos[x].Adiciones}::numeric,
+                    ${datos[x].Creditos}::numeric,
+                    ${datos[x].Contracreditos}::numeric,
+                    ${datos[x].TotalPptoactual}::numeric,
+                    ${datos[x].Disponibilidad}::numeric,
+                    ${datos[x].Compromiso}::numeric,
+                    ${datos[x].Factura}::numeric,
+                    ${datos[x].Pagos}::numeric,
+                    ${datos[x].Disponibleneto}::numeric,
+                    ${datos[x].Ejecucion}::numeric,
+                    ${datos[x].porcejecucion}::numeric,
+                    ${datos[x].mes_ejecucion}::integer,
+                    ${datos[x].vigencia}::integer,
+                  now()::date
+                );
+            `);
+            console.log(datos[x].Proyecto);
+        }
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Error getHitosComunas: ', error);
+        res.status(403).json({ message: "Error consulta getHitosComunas ", error, success: false });
+    }
+};
+
+
+
+
 module.exports = adminCtrl;
+
+///Users/jcmendoza/Desktop/Apps/j4data/kratia/4jback/src/public/EJECUCION_PRESUPUESTAL.xlsx

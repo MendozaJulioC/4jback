@@ -36,6 +36,9 @@ routerAdmin.get('/admin/dap/hitos', adminCtrl.getHitos)
 
 // .get('/admin/url', adminCtrl.getImageHitos)
 
+//inversion
+.get('/admin/dap/inversiondata',adminCtrl.getEjecucionMensual )
+
 
 
 
